@@ -1,0 +1,218 @@
+{
+  "student_name": "Rehaan Jain",
+  "team_name": "Independent",
+  "task_type": "entity_aware_sentiment_classification",
+  "dataset_used_for_initial_experiment": "ipl_sentiment_small_dataset.csv",
+  "target_labels": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "model_input_format": "subject_keyword + ' [SEP] ' + statement",
+  "hypothesis": "To handle noisy IPL fan text, I built a diverse vectorizer roster: CountVectorizer for a fast baseline, Word TF-IDF for phrase context, Character TF-IDF to catch misspelled slang, and HashingVectorizer for raw efficiency. For classifiers, I prioritized speed and generalization over heavy memorization. I paired these text features with a lightning-fast Naive Bayes, a balanced Logistic Regression, an SGD-based linear SVM, and a strictly shallow Random Forest to satisfy diversity constraints while keeping the final pipeline lightweight.",
+  "final_vectorizers": [
+    {
+      "id": "count_clean",
+      "name": "CountVectorizer Clean",
+      "family": "count",
+      "type": "CountVectorizer",
+      "params": {
+        "max_features": 1500,
+        "stop_words": "english"
+      },
+      "notes": "Highly efficient baseline capturing common cricket terminology.",
+      "complexity": "low"
+    },
+    {
+      "id": "tfidf_words_2gram",
+      "name": "TF-IDF Words 1-2 grams",
+      "family": "tfidf_word",
+      "type": "TfidfVectorizer",
+      "params": {
+        "analyzer": "word",
+        "ngram_range": [
+          1,
+          2
+        ],
+        "max_features": 2500
+      },
+      "notes": "Balances context with speed by understanding short phrases.",
+      "complexity": "medium"
+    },
+    {
+      "id": "tfidf_chars_heavy",
+      "name": "TF-IDF Characters 3-5",
+      "family": "tfidf_char",
+      "type": "TfidfVectorizer",
+      "params": {
+        "analyzer": "char",
+        "ngram_range": [
+          3,
+          5
+        ],
+        "max_features": 4000
+      },
+      "notes": "Robust typo-catcher for messy IPL fan slang.",
+      "complexity": "high"
+    },
+    {
+      "id": "hash_ultra_light",
+      "name": "Hashing Ultra Light",
+      "family": "hashing",
+      "type": "HashingVectorizer",
+      "params": {
+        "n_features": 2048,
+        "alternate_sign": false
+      },
+      "notes": "Extremely lightweight, zero-vocabulary footprint.",
+      "complexity": "low"
+    }
+  ],
+  "final_classifiers": [
+    {
+      "id": "logreg_tuned",
+      "name": "Logistic Regression Tuned",
+      "family": "linear",
+      "type": "LogisticRegression",
+      "params": {
+        "C": 0.8,
+        "class_weight": "balanced",
+        "max_iter": 1000
+      },
+      "notes": "Balanced linear model preventing overfitting.",
+      "complexity": "low"
+    },
+    {
+      "id": "nb_smooth",
+      "name": "Naive Bayes Smooth",
+      "family": "probabilistic",
+      "type": "MultinomialNB",
+      "params": {
+        "alpha": 0.1
+      },
+      "notes": "Lightning fast with high sensitivity to rare emotional words.",
+      "complexity": "low"
+    },
+    {
+      "id": "sgd_svm",
+      "name": "SGD SVM",
+      "family": "margin_based",
+      "type": "SGDClassifier",
+      "params": {
+        "loss": "hinge",
+        "penalty": "l2",
+        "alpha": 0.0001
+      },
+      "notes": "High-dimensional text master acting as an SVM.",
+      "complexity": "medium"
+    },
+    {
+      "id": "logreg_tuned",
+      "name": "Logistic Regression Tuned",
+      "family": "linear",
+      "type": "LogisticRegression",
+      "params": {
+        "C": 0.8,
+        "class_weight": "balanced",
+        "max_iter": 1000
+      },
+      "notes": "Balanced linear model preventing overfitting.",
+      "complexity": "low"
+    },
+    {
+      "id": "nb_smooth",
+      "name": "Naive Bayes Smooth",
+      "family": "probabilistic",
+      "type": "MultinomialNB",
+      "params": {
+        "alpha": 0.1
+      },
+      "notes": "Lightning fast with high sensitivity to rare emotional words.",
+      "complexity": "low"
+    },
+    {
+      "id": "sgd_svm",
+      "name": "SGD SVM",
+      "family": "margin_based",
+      "type": "SGDClassifier",
+      "params": {
+        "loss": "hinge",
+        "penalty": "l2",
+        "alpha": 0.0001
+      },
+      "notes": "High-dimensional text master acting as an SVM.",
+      "complexity": "medium"
+    },
+    {
+      "id": "forest_shallow",
+      "name": "Random Forest Shallow",
+      "family": "tree_based",
+      "type": "RandomForestClassifier",
+      "params": {
+        "n_estimators": 50,
+        "max_depth": 8,
+        "class_weight": "balanced"
+      },
+      "notes": "A lightweight tree ensemble to satisfy diversity without eating memory.",
+      "complexity": "medium"
+    }
+  ],
+  "best_80R_pipeline": {
+    "rank": 1,
+    "vectorizer_id": "hash_ultra_light",
+    "vectorizer_name": "Hashing Ultra Light",
+    "vectorizer_family": "hashing",
+    "vectorizer_complexity": "low",
+    "classifier_id": "nb_smooth",
+    "classifier_name": "Naive Bayes Smooth",
+    "classifier_family": "probabilistic",
+    "classifier_complexity": "low",
+    "pipeline_id": "hash_ultra_light__nb_smooth",
+    "status": "completed",
+    "accuracy": 0.65,
+    "macro_f1": 0.6372377622377622,
+    "weighted_f1": 0.6229458041958041,
+    "precision_macro": 0.6375661375661376,
+    "recall_macro": 0.6666666666666666,
+    "train_time_sec": 0.02439141273498535,
+    "prediction_time_sec": 0.004513978958129883,
+    "model_size_kb": 97.3369140625,
+    "performance_score": 63.82845279720279,
+    "efficiency_score": 97.6360745048523,
+    "suitability_score": 100,
+    "final_score": 79.632863939432,
+    "error": ""
+  },
+  "best_300R_pipeline": {
+    "rank_300R": 1,
+    "vectorizer_id": "count_clean",
+    "vectorizer_name": "CountVectorizer Clean",
+    "vectorizer_family": "count",
+    "vectorizer_complexity": "low",
+    "classifier_id": "logreg_tuned",
+    "classifier_name": "Logistic Regression Tuned",
+    "classifier_family": "linear",
+    "classifier_complexity": "low",
+    "pipeline_id": "count_clean__logreg_tuned",
+    "status": "completed",
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "weighted_f1": 1.0,
+    "precision_macro": 1.0,
+    "recall_macro": 1.0,
+    "train_time_sec": 0.009960651397705078,
+    "prediction_time_sec": 0.0016446113586425781,
+    "model_size_kb": 14.234375,
+    "performance_score": 100.0,
+    "efficiency_score": 99.55687191009523,
+    "suitability_score": 100,
+    "final_score": 99.91137438201906,
+    "error": ""
+  },
+  "files_expected": [
+    "completed_notebook.ipynb",
+    "submission_manifest.json",
+    "results_80R.csv",
+    "results_300R.csv"
+  ]
+}
